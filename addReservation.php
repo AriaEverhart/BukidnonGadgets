@@ -14,14 +14,6 @@
 
     <!-- Custom CSS -->
     <link href="css/simple-sidebar.css" rel="stylesheet">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
 </head>
 
 <body>
@@ -69,11 +61,11 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h3>Unit Returned</h3>
+                        <h3>Unit Reserved</h3>
 
                  
 						<?php
-                            $IMEI = $_POST['returned'];
+                            $id = $_POST['id'];
                             
                         
                             $connection = mysqli_connect('localhost', 'root', '');
@@ -86,7 +78,7 @@
                                 if(!$SelectDB)
                                     die("Database Selection Failed: ".mysqli_error($connection));
 
-                            $query = "SELECT IMEI, Buyer_ID, Name FROM sold, buyer WHERE(IMEI = '$IMEI') AND (Buyer_ID=ID)";
+                            $query = "SELECT * FROM onHand WHERE ID = '$id'";
                             $result = mysqli_query($connection, $query)
                             or die ('query error');
 
@@ -94,11 +86,10 @@
                                  ('Error in query: ' . mysqli_error($query));
                             
                             while($row = mysqli_fetch_row($result)){
-                                $IMEI       = $row[0];
-                                $Buyer_ID   = $row[1];
-                                $Buyer_Name = $row[2];
+                                $id     = $row[0];
+                                $IMEI   = $row[1];
                             }
-                            
+                        
                             $query = "SELECT concat('iPhone ', type, ' ', color, ' ', size) FROM iphone WHERE IMEI = '$IMEI'";
                             $result = mysqli_query($connection, $query)
                             or die ('query error');
@@ -107,43 +98,37 @@
                                 $device      = $row[0];
                             }
                         
-                        echo'<form name = "input" action = "addReturnedSubmit.php" method="post">
+                        echo'<form name = "input" action = "addReservationSubmit.php" method="post">
 								IMEI: ';
                                 echo($IMEI);
                                 echo'
-                                <input type = "text" name = "IMEI" value="'.$IMEI.'" hidden>
-                                <input type = "text" name = "Buyer_ID" value="'.$Buyer_ID.'" hidden>
-                                <br>Device: ';
+                                <input type = "text" name = "IMEI" value="'.$IMEI.'" hidden><br>Device: ';
                                 echo($device);
-                                echo' <br>Buyer: ';
-                                echo($Buyer_Name);
-                                echo'<br>';
                                 echo'<br><br>
-                                Date Returned:<br>
-                                <input type = "date" name = "date_returned"><br><br>
-                                
-                                Issues:<br>
-                                <textarea name ="issues" rows="10", cols="30"> </textarea><br><br>
-                                
-                                Status:<br>
+                                Buyer Name:<br>
+                                <input type = "text" name = "buyerName"><br><br>
+                                Buyer Contact No.:<br>
+                                <input type = "text" name = "buyerNo"><br><br>
+                                Payment Status:<br>
                                 <select name="Status">
-                                        <option value="Received from buyer">   Received from buyer</option>
-                                        <option value="Shipped to supplier">   Shipped to supplier</option>
-                                        <option value="Received from shipper"> Received from shipper</option>
-                                        <option value="Returned to buyer">     Returned to buyer</option>
-                                        <option value="Replaced">              Replaced</option>
+                                    <option value="Unpaid">Unpaid</option>
+                                    <option value="Partially Paid">Partially Paid</option>
+                                    <option value="Fully Paid">Fully Paid</option>
                                 </select><br><br>
+                                Amount Paid:<br>
+                                <input type = "text" name = "amountPaid"><br><br>
                                 
                                 <input type = "submit" value = "Submit">
-
                         </form>
-                        <form method="get" action="listReturned.php">
+                        <form method="get" action="listonHand.php">
                             <button type="submit">Cancel</button>
                         </form>';
                         
                         mysqli_close($connection);
                         ?>
-      
+                        
+                        
+                        
                     </div>
                 </div>
             </div>

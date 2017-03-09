@@ -52,15 +52,14 @@
                     <a href="listReturned.php">Returned</a>
                 </li>
                 <li>
-                    Options
+                    <a href="listReservations.php">Reservations</a>
                 </li>
                 <li>
-                    <a href="searchRecords.html">Search Records</a>
+                    Options
                 </li>
                 <li>
                     <a href="addRecords.html">Add Records</a>
                 </li>
-                
             </ul>
         </div>
         <!-- /#sidebar-wrapper -->

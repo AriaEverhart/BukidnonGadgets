@@ -1,4 +1,4 @@
-	<html>
+<html>
 <head>
 
     <meta charset="utf-8">
@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>[Osiris] Sold List</title>
+    <title>Reservation List</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -18,8 +18,6 @@
 </head>
 
 <body>
-    
-    
     <div id="wrapper">
 
         <!-- Sidebar -->
@@ -62,7 +60,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1>Returned</h1>
+                        <h1>Reservations</h1>
                  
 						<?php
                             $connection = mysqli_connect('localhost', 'root', '');
@@ -75,18 +73,17 @@
                                     if(!$SelectDB)
                                         die("Database Selection Failed: ".mysqli_error($connection));
 
-                                $query = 'SELECT returned.IMEI, 
-                                                 concat("iPhone ", type, " ", Color,  " ", size, "gb"), 
+                                $query = 'select reservation.IMEI, 
+                                                 concat("iPhone ", iPhone.Type, " ", iPhone.Color, " ", iPhone.Size,"gb"), 
                                                  IOS_Version, 
                                                  buyer.name, 
-                                                 returned.return_date, 
-                                                 returned.Issues,
-                                                 returned.return_status
-                                          FROM buyer, returned, iPhone 
-                                          WHERE (returned.buyer_ID=buyer.id) AND (returned.IMEI=iPhone.IMEI)';
-                        
+                                                 buyer.Contact_no, 
+                                                 Status,
+                                                 FORMAT(AmountPaid,2) 
+                                         FROM iPhone, reservation, buyer 
+                                         WHERE (reservation.IMEI=iPhone.IMEI) AND (reservation.buyer_ID=buyer.id);';
                                 $result = mysqli_query($connection, $query)
-                                or die ('query error');
+                                or die ("Reservation Query error : '$query'");
 
                                  if(!$query)
                                      ('Error in query: ' . mysqli_error($query));
@@ -100,9 +97,9 @@
 													<th>Device</th>
 													<th>IOS Version</th>
                                                     <th>Buyer Name</th>
-                                                    <th>Date Returned</th>
-                                                    <th>Issues</th>
+                                                    <th>Contact No.</th>
                                                     <th>Status</th>
+													<th>Amount Paid</th>
                                                 </tr>
                                             </thead>";
 
@@ -115,12 +112,14 @@
                                                     <td>$row[3]</td>
 													<td>$row[4]</td>
 													<td>$row[5]</td>
-                                                    <td>$row[6]</td>";
+													<td>$row[6]</td>";
                                         
-                                        echo' 
+                                        echo'
+                                            
+                                            
                                             <td id = "sold" width = 20>
-                                                <form name = "sold" action = "addSold.php" method = "post">
-                                                    <button name = "id" type="submit" value="'. $row[0] .'" class="btn btn-success btn-xs">
+                                                <form name = "sold" action = "reservedToSold.php" method = "post">
+                                                    <button name = "IMEI" type="submit" value="'. $row[0] .'" class="btn btn-success btn-xs">
                                                             <span class="glyphicon glyphicon-shopping-cart"></span>
                                                     </button>
                                                 </form>
@@ -140,6 +139,8 @@
                                                 </form>
                                                 
                                             </td>';	
+                                            
+                                            ;	
                                         
                                         echo"</tr>";	
                                     }

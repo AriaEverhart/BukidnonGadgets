@@ -26,7 +26,6 @@
 
 <body>
     <div id="wrapper">
-
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
@@ -50,15 +49,14 @@
                     <a href="listReturned.php">Returned</a>
                 </li>
                 <li>
-                    Options
+                    <a href="listReservations.php">Reservations</a>
                 </li>
                 <li>
-                    <a href="searchRecords.html">Search Records</a>
+                    Options
                 </li>
                 <li>
                     <a href="addRecords.html">Add Records</a>
                 </li>
-                
             </ul>
         </div>
         <!-- /#sidebar-wrapper -->
@@ -72,6 +70,7 @@
 
 							<?php
                                 $IMEI = $_POST['IMEI'];
+                                $origIMEI = $IMEI;
                         
                                 $connection = mysqli_connect('localhost', 'root', '');
 
@@ -88,23 +87,24 @@
                                     ('Error in query: ' . mysqli_error($query));
 
                                 while($row = mysqli_fetch_row($result)){
-                                    $type =          $row[1];
-                                    $color =         $row[2];
-                                    $size =          $row[3];
-                                    $unlockType =    $row[4];
-                                    $network =       $row[5];
-                                    $arrivalDate =   $row[6];
+                                    $type          = $row[1];
+                                    $color         = $row[2];
+                                    $size          = $row[3];
+                                    $unlockType    = $row[4];
+                                    $network       = $row[5];
+                                    $arrivalDate   = $row[6];
                                     $supplierPrice = $row[7];
-                                    $shippingFee =   $row[8];
-                                    $otherFees =     $row[9];
-                                    $IOSVersion =    $row[10];
-                                    $clean =         $row[11];
+                                    $shippingFee   = $row[8];
+                                    $otherFees     = $row[9];
+                                    $IOSVersion    = $row[10];
+                                    $clean         = $row[11];
                                 }
+                        
                                 echo'
                                 <form name = "input" action = "editRecordsSubmit.php" method="post">
                                     IMEI:<br>
-                                    <input type = "text" name = "IMEI" value="'.$IMEI.'"><br><br>
-                                
+                                    <input type = "text" name = "IMEI" value     ="'.$IMEI.'"><br><br>
+                                    <input type = "text" name = "origIMEI" value="'.$origIMEI.'" hidden>
                                 
                                     Type:<br>
                                     <select name="type">';
@@ -118,12 +118,12 @@
                                     Color:<br>
                                     <select name="color">';
                                         echo'<option value="Silver"';     if($color=='Silver')     {echo'selected';} echo'>Silver</option>';
-                                        echo'<option value="Gold"';       if($color=='Gold')       {echo'selected';} echo'>Silver</option>';
+                                        echo'<option value="Gold"';       if($color=='Gold')       {echo'selected';} echo'>Gold</option>';
                                         echo'<option value="Space Grey"'; if($color=='Space Grey') {echo'selected';} echo'>Space Grey</option>';
                                         echo'<option value="Rose Gold"';  if($color=='Rose Gold')  {echo'selected';} echo'>Rose Gold</option>
                                     </select><br><br>
 
-
+                                    
                                     Size:<br>
                                     <select name="size">';
                                         echo'<option value="16"';  if($size=='16')       {echo'selected';} echo'>16gb</option>';
@@ -144,7 +144,12 @@
 
                                     Network Lock:<br>
                                     <input type = "text" name = "Network" value="'.$network.'"><br><br>
-
+                                    
+                                    Status:<br>
+                                    <select name="clean">';
+                                        echo'<option value="C"';  if($clean=='C')       {echo'selected';} echo'>C</option>';
+                                        echo'<option value="UC"'; if($clean=='UC')      {echo'selected';} echo'>UC</option>
+                                    </select><br><br>
                                     Arrival Date:<br>
                                     <input type = "date" name = "Arrival_Date" value="'.$arrivalDate.'"><br><br>
 
@@ -155,11 +160,145 @@
                                     <input type = "text" name = "Shipping_fee" value="'.$shippingFee.'"><br><br>
                                     Other Expenses:<br>
                                     <input type = "text" name = "Other_Expenses" value="'.$otherFees.'"><br><br>
+                                    <br>';
+                                    
+                                    $soldChecker = "SELECT * FROM sold WHERE IMEI='$IMEI'";
+                                    $isSold = mysqli_query($connection, $soldChecker)
+                                    or die ('query error');
+                                    
+                                    if(mysqli_num_rows($isSold)>0){
+                                        while($row = mysqli_fetch_row($isSold)){
+                                            $buyerID   = $row[1];
+                                            $dateSold  = $row[2];
+                                            $salePrice = $row[3];
+                                        }
+                                        
+                                        $Checker = "sold";
+                                        $buyerInfoQuery = "SELECT * FROM buyer WHERE ID='$buyerID'";
+                                        $buyerInfo = mysqli_query($connection, $buyerInfoQuery)
+                                        or die ('query error');
+                                        
+                                        while($row = mysqli_fetch_row($buyerInfo)){
+                                            $buyerName      = $row[1];
+                                            $buyerContactNo = $row[2];
+                                        }
+                                        
+                                        echo'   
+                                            <h1>Sold Edit</h1>
+                                            <input type = "text" name = "Checker" value = "'.$Checker.'" hidden>
+                                            <input type = "text" name = "buyerID" value="'.$buyerID.'" hidden>
 
-                                    <br>
-                                    <input type = "submit" value = "Submit">
+                                            Date Sold:
+                                            <input type = "date" name = "dateSold" value="'.$dateSold.'"><br><br>
+
+                                            Sale Price:
+                                            <input type = "text" name = "salePrice" value="'.$salePrice.'"><br><br>
+                                        ';
+                                    }
+                        
+                        
+                                    $returnedChecker = "SELECT * FROM returned WHERE IMEI='$origIMEI'";
+                                    $isReturned = mysqli_query($connection, $returnedChecker)
+                                    or die ('query error');
+
+                                     if(mysqli_num_rows($isReturned)>0){
+                                        while($row = mysqli_fetch_row($isReturned)){
+                                            $buyerID    = $row[1];
+                                            $returnDate = $row[2];
+                                            $Status     = $row[3];
+                                            $issues     = $row[4];
+                                        }
+
+                                        $buyerInfoQuery = "SELECT * FROM buyer WHERE ID='$buyerID'";
+                                        $buyerInfo = mysqli_query($connection, $buyerInfoQuery)
+                                        or die ('query error');
+
+                                        while($row = mysqli_fetch_row($buyerInfo)){
+                                            $buyerName      = $row[1];
+                                            $buyerContactNo = $row[2];
+                                        }
+
+                                        $Checker = "returned";
+                                        echo'
+                                            <h1>Returned Edit</h1>
+                                            <input type = "text" name = "Checker" value = "'.$Checker.'" hidden>
+                                            <input type = "text" name = "buyerID" value = "'.$buyerID.'" hidden>
+
+                                            Date Returned:<br>
+                                            <input type = "date" name = "returnDate" value = "'.$returnDate.'"><br><br>
+
+                                            Issues:<br>
+                                            <textarea name ="issues" rows="10", cols="30">'.$issues.'</textarea><br><br>
+
+                                            Status:<br>
+                                            <select name="Status">';
+                                                echo'<option value="Received from buyer"';   if($Status=='Received from buyer')   {echo'selected';} echo'>Received from buyer</option>';
+                                                echo'<option value="Shipped to supplier"';   if($Status=='Shipped to supplier')  {echo'selected';} echo'>Shipped to supplier</option>';
+                                                echo'<option value="Received from Supplier"'; if($Status=='Received from supplier') {echo'selected';} echo'>Received from supplier</option>';
+                                                echo'<option value="Returned to buyer"';     if($Status=='Returned to buyer')     {echo'selected';} echo'>Returned to buyer</option>';        
+                                                echo'<option value="Replaced"';              if($Status=='Replaced')              {echo'selected';} echo'>Replaced</option>     
+                                            </select><br><br>
+                                        ';
+                                    }
+                        
+                                    $reservedChecker = "SELECT * FROM reservation WHERE IMEI='$origIMEI'";
+                                    $isReserved = mysqli_query($connection, $reservedChecker)
+                                        or die ('query error');
+
+                                    if(mysqli_num_rows($isReserved)>0){
+                                        while($row = mysqli_fetch_row($isReserved)){
+                                            $buyerID    = $row[1];
+                                            $status     = $row[2];
+                                            $amountPaid = $row[3];
+
+                                        $buyerInfoQuery = "SELECT * FROM buyer WHERE ID='$buyerID'";
+                                        $buyerInfo = mysqli_query($connection, $buyerInfoQuery)
+                                        or die ('query error');
+
+                                        while($row = mysqli_fetch_row($buyerInfo)){
+                                            $buyerName      = $row[1];
+                                            $buyerContactNo = $row[2];
+                                        }   
+
+                                        $Checker = "reserved";
+                                        echo'
+                                            <h1>Reserved Edit</h1>
+
+                                            <input type = "text" name = "Checker" value = "'.$Checker.'" hidden>
+                                            <input type = "text" name = "buyerID" value = "'.$buyerID.'" hidden>
+
+                                            Payment Status:<br>
+                                            <select name="status">';
+                                                echo'<option value="Unpaid"';         if($status=='Unpaid')         {echo'selected';} echo'>Unpaid</option>';
+                                                echo'<option value="Partially Paid"'; if($status=='Partially Paid') {echo'selected';} echo'>Partially Paid</option>';
+                                                echo'<option value="Fully Paid"';     if($status=='Fully Paid')     {echo'selected';} echo'>Fully Paid</option>
+                                            </select><br><br>
+
+                                            Amount Paid:<br>
+                                            <input type = "text" name = "amountPaid" value = "'.$amountPaid.'">';
+;    
+                                        }  
+                                    }    
+                if(mysqli_num_rows($isSold)>0 || (mysqli_num_rows($isReturned)>0) || (mysqli_num_rows($isReserved)>0)){
+                                        echo'
+                                            <h1>Buyer Edit</h1>
+                                            Buyer Name:<br>
+                                            <input type = "text" name = "buyerName" value="'.$buyerName.'"><br><br>
+
+                                            Buyer Contact Number:<br>
+                                            <input type = "text" name = "buyerNo" value="'.$buyerContactNo.'"><br><br>
+                                            ';
+                                    }
+                                        
+                                    if((mysqli_num_rows($isSold)==0)&&(mysqli_num_rows($isReturned)==0)&&(mysqli_num_rows($isReserved)==0)){
+                                        echo'<input type = "text" name = "Checker" value = "onHand" hidden>';
+                                    }
+
+                                    echo'<input type = "submit" value = "Submit">
                                     <input type = "reset">
-                                </form>';
+                                    </form>';
+                            mysqli_close($connection);
+
                             ?>
                     </div>
                 </div>

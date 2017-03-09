@@ -69,81 +69,69 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h3>Unit Returned</h3>
+                        <h3>Unit Sold</h3>
 
                  
 						<?php
-                            $IMEI = $_POST['returned'];
-                            
+                            $IMEI = $_POST['IMEI'];
                         
                             $connection = mysqli_connect('localhost', 'root', '');
                                 if ($connection->connect_errno) {
                                     echo ("SQL can't connect to PHP". $connection->connect_error);
                                     exit();
                                 }	
-
+                            
                             $SelectDB = mysqli_select_db($connection, "BukidnonGadgets");
                                 if(!$SelectDB)
                                     die("Database Selection Failed: ".mysqli_error($connection));
-
-                            $query = "SELECT IMEI, Buyer_ID, Name FROM sold, buyer WHERE(IMEI = '$IMEI') AND (Buyer_ID=ID)";
-                            $result = mysqli_query($connection, $query)
-                            or die ('query error');
-
-                             if(!$query)
-                                 ('Error in query: ' . mysqli_error($query));
                             
-                            while($row = mysqli_fetch_row($result)){
-                                $IMEI       = $row[0];
-                                $Buyer_ID   = $row[1];
-                                $Buyer_Name = $row[2];
+                            $getBuyer = "SELECT Buyer_ID FROM reservation WHERE IMEI='$IMEI'";
+                            $getBuyerResult = mysqli_query($connection, $getBuyer)
+                                or die ("Device Fetch Query Error: '$getBuyer'");
+                            while($row = mysqli_fetch_row($getBuyerResult)){
+                                $buyerID = $row[0];
                             }
                             
-                            $query = "SELECT concat('iPhone ', type, ' ', color, ' ', size) FROM iphone WHERE IMEI = '$IMEI'";
-                            $result = mysqli_query($connection, $query)
-                            or die ('query error');
+                            $getBuyer = "SELECT * FROM buyer WHERE ID='$buyerID'";
+                            $getBuyerResult = mysqli_query($connection, $getBuyer)
+                                or die ("Device Fetch Query Error: '$getBuyer'");
+                            while($row = mysqli_fetch_row($getBuyerResult)){
+                                $buyerName = $row[1];
+                                $buyerNo   = $row[2];
+                            }
+                            
+                            $getDevice = "SELECT concat('iPhone ', type, ' ', color, ' ', size) FROM iphone WHERE IMEI = '$IMEI'";
+                            $getDeviceResult = mysqli_query($connection, $getDevice)
+                                or die ("Device Fetch Query Error: '$getDevice'");
                         
-                            while($row = mysqli_fetch_row($result)){
+                            while($row = mysqli_fetch_row($getDeviceResult)){
                                 $device      = $row[0];
                             }
-                        
-                        echo'<form name = "input" action = "addReturnedSubmit.php" method="post">
-								IMEI: ';
-                                echo($IMEI);
-                                echo'
-                                <input type = "text" name = "IMEI" value="'.$IMEI.'" hidden>
-                                <input type = "text" name = "Buyer_ID" value="'.$Buyer_ID.'" hidden>
-                                <br>Device: ';
-                                echo($device);
-                                echo' <br>Buyer: ';
-                                echo($Buyer_Name);
-                                echo'<br>';
-                                echo'<br><br>
-                                Date Returned:<br>
-                                <input type = "date" name = "date_returned"><br><br>
-                                
-                                Issues:<br>
-                                <textarea name ="issues" rows="10", cols="30"> </textarea><br><br>
-                                
-                                Status:<br>
-                                <select name="Status">
-                                        <option value="Received from buyer">   Received from buyer</option>
-                                        <option value="Shipped to supplier">   Shipped to supplier</option>
-                                        <option value="Received from shipper"> Received from shipper</option>
-                                        <option value="Returned to buyer">     Returned to buyer</option>
-                                        <option value="Replaced">              Replaced</option>
-                                </select><br><br>
+                            
+
+                        echo'<form name = "input" action = "returnedToSoldSubmit.php" method="post">
+								IMEI: '.$IMEI.'
+                                <br>Device: '.$device.'
+                                <br>Buyer: '.$buyerName.'
+                                <input type = "text" name = "IMEI"    value="'.$IMEI.'" hidden>
+                                <input type = "text" name = "buyerID" value="'.$buyerID.'" hidden>
+                                <br><br>
+                                Date Sold:<br>
+                                <input type = "date" name = "dateSold"><br><br>
+                                Sale Price:<br>
+                                <input type = "text" name = "price"><br><br>
                                 
                                 <input type = "submit" value = "Submit">
-
                         </form>
-                        <form method="get" action="listReturned.php">
+                        <form method="get" action="listonHand.php">
                             <button type="submit">Cancel</button>
                         </form>';
                         
                         mysqli_close($connection);
                         ?>
-      
+                        
+                        
+                        
                     </div>
                 </div>
             </div>

@@ -1,10 +1,11 @@
 <?php
-    $IMEI =           $_POST['IMEI'];
-    $Buyer_ID =       $_POST['Buyer_ID'];
-    $Date_Returned =  $_POST['date_returned'];
-    $Issues =         $_POST['issues'];
+    $IMEI           = $_POST['IMEI'];
+    $Buyer_ID       = $_POST['Buyer_ID'];
+    $Date_Returned  = $_POST['date_returned'];
+    $Status         = $_POST['Status'];
+    $Issues         = $_POST['issues'];
 
-    $Date_Returned = date('y-m-d',strtotime($Date_DateReturned));
+    $Date_Returned = date('y-m-d',strtotime($Date_Returned));
 
     $connection = mysqli_connect('localhost', 'root', '');
         if ($connection->connect_errno) {
@@ -16,11 +17,8 @@
         if(!$SelectDB)
             die("Database Selection Failed: ".mysqli_error($connection));
     
-    $query = "INSERT INTO returned VALUES ('$IMEI', '$Buyer_ID', '$Date_Returned', '$Issues')";
-    $result = mysqli_query($connection, $query) or die ('query error1');
-    
-    $query = "DELETE FROM sold WHERE IMEI = '$IMEI'";
-    $result = mysqli_query($connection, $query) or die ('query error2');
+    $query = "INSERT INTO returned VALUES ('$IMEI', '$Buyer_ID', '$Date_Returned', '$Status', '$Issues')";
+    $result = mysqli_query($connection, $query) or die ("query error1'$query'");
 
     mysqli_close($connection);
 

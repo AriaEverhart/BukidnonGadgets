@@ -50,15 +50,14 @@
                     <a href="listReturned.php">Returned</a>
                 </li>
                 <li>
-                    Options
+                    <a href="listReservations.php">Reservations</a>
                 </li>
                 <li>
-                    <a href="searchRecords.html">Search Records</a>
+                    Options
                 </li>
                 <li>
                     <a href="addRecords.html">Add Records</a>
                 </li>
-                
             </ul>
         </div>
         <!-- /#sidebar-wrapper -->
@@ -69,66 +68,96 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1>Add Records</h1>
+                            <div class = "form">
+							     <form name = "input" action = "addRecords.php" method="post">
+                                     <table cellspacing="10" name="form">
+                                        <tr> 
+                                            <td align="right">IMEI:</td>
+                                            <td align="left"><input type = "text" name = "IMEI" size=15></td>
+                                        </tr>
+                                        <tr><td></td></tr>
+                                        <tr><td></td></tr>
+                                        <tr>
+                                            <td align="right">Type:</td>
+                                            <td align="left"><select name="type">
+                                              <option value="5">iPhone 5</option>
+                                              <option value="5s">iPhone 5s</option>
+                                              <option value="6">iPhone 6</option>
+                                              <option value="6s">iPhone 6s</option>
+                                              <option value="6s Plus">iPhone 6s Plus</option>
+                                            </select></td>	
+                                        </tr>
+                                        <tr>
+                                            <td align="right">Color:</td>
+                                            <td align="left"><select name="color">
+                                              <option value="Silver">Silver</option>
+                                              <option value="Gold">Gold</option>
+                                              <option value="Space Grey">Space Grey</option>
+                                              <option value="Rose Gold">Rose Gold</option>
+                                            </select></td>	
+                                        </tr>
 
-							<form name = "input" action = "addRecords.php" method="post">
-								IMEI:<br>
-                                <input type = "text" name = "IMEI"><br><br>
-                                
-								Type:<br>
-								<select name="type">
-                                  <option value="5">iPhone 5</option>
-                                  <option value="5s">iPhone 5s</option>
-                                  <option value="6">iPhone 6</option>
-                                  <option value="6s">iPhone 6s</option>
-                                  <option value="6s Plus">iPhone 6s Plus</option>
-                                </select><br><br>	
-                                							
-                                Color:<br>
-                                <select name="color">
-                                  <option value="Silver">Silver</option>
-                                  <option value="Gold">Gold</option>
-                                  <option value="Space Grey">Space Grey</option>
-                                  <option value="Rose Gold">Rose Gold</option>
-                                </select><br><br>
-                                
-
-                                Size:<br>
-                                <select name="size">
-                                  <option value="16">16gb</option>
-                                  <option value="32">32gb</option>
-                                  <option value="64">64gb</option>
-                                  <option value="128">128gb</option>
-                                </select><br><br>
-                                
-                                IOS Version:<br>
-                                <input type = "text" name = "IOS_Version"><br><br>
-
-                                
-                                Unlock Type:<br>
-                                <select name="Unlock">
-                                  <option value="GPP 3G">GPP 3G</option>
-                                  <option value="GPP LTE">GPP LTE</option>
-                                  <option value="Factory Unlock">Factory Unlock</option>
-                                </select><br><br>
-
-                                Network Lock:<br>
-                                <input type = "text" name = "Network"><br><br>
-                            
-                                Arrival Date:<br>
-                                <input type = "date" name = "Arrival_Date"><br><br>
-                                
-                                Supplier Price:<br>
-                                <input type = "text" name = "Supplier_Price"><br><br>
-                                
-                                Shipping Fee:<br>
-                                <input type = "text" name = "Shipping_fee"><br><br>
-                                Other Expenses:<br>
-                                <input type = "text" name = "Other_Expenses"><br><br>
-                                
-								<br>
-								<input type = "submit" value = "Submit">
-								<input type = "reset">
-							</form>			
+                                        <tr>
+                                            <td align="right">Capacity:</td>
+                                            <td align="left"><select name="size">
+                                              <option value="16">16gb</option>
+                                              <option value="32">32gb</option>
+                                              <option value="64">64gb</option>
+                                              <option value="128">128gb</option>
+                                                </select></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">IOS Version:<br></td>
+                                            <td align="left"><input type = "text" name = "IOS_Version" size=8></td>
+                                        </tr>
+                                        <tr><td></td></tr>
+                                        <tr><td></td></tr>
+                                        <tr>
+                                            <td align="right">Unlock Type:</td>
+                                            <td align="left"><select name="Unlock">
+                                              <option value="GPP 3G">GPP 3G</option>
+                                              <option value="GPP LTE">GPP LTE</option>
+                                              <option value="Factory Unlock">Factory Unlock</option>
+                                            </select></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">Network:</td>
+                                            <td align="left"><input type = "text" name = "Network" size=15></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">Status:<br></td>
+                                            <td align="left"><select name="clean">
+                                              <option value="C">C</option>
+                                              <option value="UC">UC</option>
+                                            </select></td>
+                                        </tr>
+                                        <tr><td></td></tr>
+                                        <tr><td></td></tr>
+                                        <tr>
+                                            <td align="right">Arrival Date:</td>
+                                            <td align="left"><input type = "date" name = "Arrival_Date" size="10"></td>
+                                        </tr>   
+                                        <tr>
+                                            <td align="right">Supplier Price:</td>
+                                            <td align="left"><input type = "text" name = "Supplier_Price" size=6></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">Shipping Fee:</td>
+                                            <td align="left"><input type = "text" name = "Shipping_fee" size=6></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">Other Expenses:</td>
+                                            <td align="left"><input type = "text" name = "Other_Expenses" size=6></td>
+                                        </tr>
+                                        <tr><td></td></tr>
+                                        <tr><td></td></tr>
+                                        <tr>
+                                            <td align="right"><input type = "submit" value = "Submit"></td>
+                                            <td align="left"><input type = "reset"></td>
+                                        </tr>
+                                </table>
+							 </form>		
+                        </div>
                     </div>
                 </div>
             </div>

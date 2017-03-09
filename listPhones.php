@@ -45,15 +45,14 @@
                     <a href="listReturned.php">Returned</a>
                 </li>
                 <li>
-                    Options
+                    <a href="listReservations.php">Reservations</a>
                 </li>
                 <li>
-                    <a href="searchRecords.html">Search Records</a>
+                    Options
                 </li>
                 <li>
                     <a href="addRecords.html">Add Records</a>
                 </li>
-                
             </ul>
         </div>
         <!-- /#sidebar-wrapper -->
@@ -126,20 +125,17 @@
                                                     <td>$row[9]</td>";
                                         
                                         echo' 
-                                            
-                                            <td id = "edit" width = 20>
+                                           <td id = "delete" width = 20>
+                                                <form name = "delete" action = "deleteRecord.php" method = "post">
+                                                     <button name = "IMEI" type="submit" value="' . $row[0] . '" class="btn btn-danger btn-xs"  onClick="return confirm(\'Delete This account?\')"> 
+                                                            <span class="glyphicon glyphicon-minus"></span>
+                                                     </button>
+                                                </form>
+                                                
                                                 <form name = "edit" action = "editRecords.php" method = "post">
-                                                    <button name = "IMEI" type="submit" value="'. $row[0] .'" class="btn btn-default btn-sm">
+                                                    <button name = "IMEI" type="submit" value="'. $row[0] .'" class="btn btn-primary     btn-xs">
                                                             <span class="glyphicon glyphicon-edit"></span>
                                                     </button>
-                                                </form>
-                                            </td>
-                                            
-                                            <td id = "delete" width = 20>
-                                                <form name = "delete" action = "deleteRecord.php" method = "post">
-                                                     <button name = "delete" type="submit" value="' . $row[0] . '" class="btn btn-default btn-sm"> 
-                                                            <span class="glyphicon glyphicon-trash"></span>
-                                                     </button>
                                                 </form>
                                             </td>
                                             ';	

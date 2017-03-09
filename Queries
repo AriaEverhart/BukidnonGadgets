@@ -9,30 +9,63 @@ create table iPhone (IMEI VARCHAR(15) PRIMARY KEY,
                      Supplier_Date DATE, 
                      Supplier_Price numeric(15,2),
                      Shipping_Price numeric(15,2),
-                     Other_Expenses numeric(15,2)
+                     Other_Expenses numeric(15,2),
+                     IOS_Version varchar(10),
+                     clean varchar(7)
                      );
                      
 create table onHand (ID INT AUTO_INCREMENT PRIMARY KEY,
                      IMEI VARCHAR(15), 
-                     FOREIGN KEY(IMEI) REFERENCES iPhone(IMEI));
+                     FOREIGN KEY(IMEI)
+                        REFERENCES iPhone(IMEI)
+                        ON DELETE CASCADE
+                        ON UPDATE CASCADE
+                    );
 
 create table buyer (ID INT AUTO_INCREMENT PRIMARY KEY,
                     Name VARCHAR(100),
                     Contact_No VARCHAR(13)
                     );
                     
-create table sold (IMEI VARCHAR(15) PRIMARY KEY,
-                   Buyer_ID INT,
-                   Date_Bought DATE,
-                   Sale_Price numeric(15,2),
-                   FOREIGN KEY(Buyer_ID) REFERENCES buyer(ID)
-                   ); 
+create table sold (
+    IMEI VARCHAR(15) PRIMARY KEY,
+    Buyer_ID INT,
+    Date_Bought DATE,
+    Sale_Price numeric(15,2),
+    FOREIGN KEY(Buyer_ID) 
+        REFERENCES buyer(ID)
+        ON UPDATE CASCADE,
+    FOREIGN KEY(IMEI)
+        REFERENCES iphone(IMEI)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+); 
+
+create table reservation(
+    IMEI VARCHAR(15) PRIMARY KEY,
+    Buyer_ID INT,
+    Status VARCHAR(15),
+    AmountPaid numeric(15,2),
+    FOREIGN KEY(Buyer_ID) 
+        REFERENCES buyer(ID)
+        ON UPDATE CASCADE,
+    FOREIGN KEY(IMEI)
+        REFERENCES iphone(IMEI)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+); 
                    
-create table returned (IMEI VARCHAR(15) PRIMARY KEY,
-                       Buyer_ID INT,
-                       Return_Date DATE,
-                       Issues VARCHAR(250)
-                       );
+create table returned (
+    IMEI VARCHAR(15) PRIMARY KEY,
+    Buyer_ID INT,
+    Return_Date DATE,
+    Return_Status VARCHAR(20),
+    Issues VARCHAR(250),
+    FOREIGN KEY(IMEI)
+        REFERENCES iphone(IMEI)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);
 ------------------------------------------------------------------------------------------------  
                    
                    

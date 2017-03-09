@@ -52,19 +52,19 @@ INSERT INTO `community_organization` (`Community_ID`, `Community_Name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `nutritional_status`
+-- Table structure for table `nutritional_Status`
 --
 
-CREATE TABLE `nutritional_status` (
+CREATE TABLE `nutritional_Status` (
   `Nutrition_ID` int(11) NOT NULL,
   `Nutrition_Description` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `nutritional_status`
+-- Dumping data for table `nutritional_Status`
 --
 
-INSERT INTO `nutritional_status` (`Nutrition_ID`, `Nutrition_Description`) VALUES
+INSERT INTO `nutritional_Status` (`Nutrition_ID`, `Nutrition_Description`) VALUES
 (1, 'Above Normal'),
 (2, 'Normal'),
 (3, 'Below Normal(moderate)'),
@@ -111,9 +111,9 @@ ALTER TABLE `community_organization`
   ADD PRIMARY KEY (`Community_ID`);
 
 --
--- Indexes for table `nutritional_status`
+-- Indexes for table `nutritional_Status`
 --
-ALTER TABLE `nutritional_status`
+ALTER TABLE `nutritional_Status`
   ADD PRIMARY KEY (`Nutrition_ID`);
 
 --
@@ -141,9 +141,9 @@ ALTER TABLE `resident`
 ALTER TABLE `community_organization`
   MODIFY `Community_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
--- AUTO_INCREMENT for table `nutritional_status`
+-- AUTO_INCREMENT for table `nutritional_Status`
 --
-ALTER TABLE `nutritional_status`
+ALTER TABLE `nutritional_Status`
   MODIFY `Nutrition_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `other_comm_orgs`
@@ -163,7 +163,7 @@ ALTER TABLE `resident`
 -- Constraints for table `resident`
 --
 ALTER TABLE `resident`
-  ADD CONSTRAINT `resident_ibfk_1` FOREIGN KEY (`Nutrition_ID`) REFERENCES `nutritional_status` (`Nutrition_ID`),
+  ADD CONSTRAINT `resident_ibfk_1` FOREIGN KEY (`Nutrition_ID`) REFERENCES `nutritional_Status` (`Nutrition_ID`),
   ADD CONSTRAINT `resident_ibfk_2` FOREIGN KEY (`Community_ID`) REFERENCES `community_organization` (`Community_ID`),
   ADD CONSTRAINT `resident_ibfk_3` FOREIGN KEY (`Other_ID`) REFERENCES `other_comm_orgs` (`Other_ID`);
 
