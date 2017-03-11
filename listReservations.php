@@ -23,11 +23,11 @@
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
-                <li class="sidebar-brand">
+                <li class="sidebar-brand" align="center">
                     <a href="index.html">
                         Home
                     </a>
-                <li>
+                <li align="center">
                     Show Records
                 </li>
                 <li>
@@ -45,23 +45,27 @@
                 <li>
                     <a href="listReservations.php">Reservations</a>
                 </li>
-                <li>
+                <li align="center">
                     Options
                 </li>
                 <li>
                     <a href="addRecords.html">Add Records</a>
+                </li>
+                <li>
+                    <a href="addNewReservation.html">New Reservation</a>
                 </li>
             </ul>
         </div>
         <!-- /#sidebar-wrapper -->
 
         <!-- Page Content -->
+        <div class="row" id="headerTitle"><h1>Reservations</h1></div>
+
+        <!-- Page Content -->
         <div id="page-content-wrapper">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-12">
-                        <h1>Reservations</h1>
-                 
+                    <div class="col-lg-12">                 
 						<?php
                             $connection = mysqli_connect('localhost', 'root', '');
                                 if ($connection->connect_errno) {
@@ -73,72 +77,105 @@
                                     if(!$SelectDB)
                                         die("Database Selection Failed: ".mysqli_error($connection));
 
-                                $query = 'select reservation.IMEI, 
-                                                 concat("iPhone ", iPhone.Type, " ", iPhone.Color, " ", iPhone.Size,"gb"), 
-                                                 IOS_Version, 
-                                                 buyer.name, 
-                                                 buyer.Contact_no, 
-                                                 Status,
-                                                 FORMAT(AmountPaid,2) 
-                                         FROM iPhone, reservation, buyer 
-                                         WHERE (reservation.IMEI=iPhone.IMEI) AND (reservation.buyer_ID=buyer.id);';
-                                $result = mysqli_query($connection, $query)
-                                or die ("Reservation Query error : '$query'");
+                                $listExisting = 'SELECT 0,
+                                                         reservation.IMEI, 
+                                                         CONCAT("iPhone ", iPhone.Type, " ", iPhone.Color, " ", iPhone.Size,"gb"), 
+                                                         buyer.name, 
+                                                         buyer.Contact_no, 
+                                                         reservation.Status,
+                                                         FORMAT(AmountPaid,2),
+                                                         reservation.remarks
+                                                 FROM iPhone, reservation, buyer
+                                                 WHERE (reservation.IMEI=iPhone.IMEI) AND (reservation.buyer_ID=buyer.id)
+                                                 UNION
+                                                 SELECT tempDevices.ID,
+                                                        NULL,
+                                                        CONCAT("iPhone ", tempDevices.Type, " ", tempDevices.Color, " ", tempDevices.Size,"gb"),
+                                                        buyer.name,
+                                                        buyer.Contact_no,
+                                                        tempDevicesReservation.Status,
+                                                        FORMAT(AmountPaid,2),
+                                                        tempDevicesReservation.remarks
+                                                 FROM tempDevices, tempDevicesReservation, buyer
+                                                 WHERE (tempDevicesReservation.Buyer_ID=buyer.ID) AND (tempDevicesReservation.TempDevice_ID=tempdevices.id)';
 
-                                 if(!$query)
-                                     ('Error in query: ' . mysqli_error($query));
+                                $listExistingResult = mysqli_query($connection, $listExisting)
+                                or die ("Reservation Query error : '$listExisting'");
 
-                                if(mysqli_num_rows ($result)>0){
+                                 if(!$listExisting)
+                                     ('Error in query: ' . mysqli_error($listExisting));
+
+                                if(mysqli_num_rows ($listExistingResult)>0){
                                         echo'<div class="table-responsive">';
                                         echo'<table class="table">';
                                         echo"<thead>
                                                 <tr>
                                                     <th>IMEI</th>
 													<th>Device</th>
-													<th>IOS Version</th>
                                                     <th>Buyer Name</th>
                                                     <th>Contact No.</th>
                                                     <th>Status</th>
 													<th>Amount Paid</th>
+                                                    <th>Remarks</th>
                                                 </tr>
                                             </thead>";
 
-                                    while($row = mysqli_fetch_row($result)){
+                                    while($row = mysqli_fetch_row($listExistingResult)){
                                         echo"<tbody>
                                                 <tr>
-                                                    <td>$row[0]</td>
-                                                    <td>$row[1]</td> 
+                                                    <td>$row[1]</td>
                                                     <td>$row[2]</td> 
-                                                    <td>$row[3]</td>
-													<td>$row[4]</td>
+                                                    <td>$row[3]</td> 
+                                                    <td>$row[4]</td>
 													<td>$row[5]</td>
-													<td>$row[6]</td>";
+													<td>$row[6]</td>
+													<td>$row[7]</td>";
+                                                    
                                         
-                                        echo'
-                                            
-                                            
-                                            <td id = "sold" width = 20>
+                                        $checker = $row[0];
+                                        
+                                        
+                                        if($checker==0){
+                                            echo'<td id = "sold" width = 20>
                                                 <form name = "sold" action = "reservedToSold.php" method = "post">
-                                                    <button name = "IMEI" type="submit" value="'. $row[0] .'" class="btn btn-success btn-xs">
+                                                    <button name = "Sold" type="submit" value="'. $row[1] .'" class="btn btn-success btn-xs">
                                                             <span class="glyphicon glyphicon-shopping-cart"></span>
                                                     </button>
                                                 </form>
-                                            </td>
-                                            
-                                            <td id = "delete" width = 20>
-                                                <form name = "delete" action = "deleteRecord.php" method = "post">
-                                                     <button name = "IMEI" type="submit" value="' . $row[0] . '" class="btn btn-danger btn-xs" onClick="return confirm(\'Delete This account?\')"> 
-                                                            <span class="glyphicon glyphicon-minus"></span>
-                                                     </button>
-                                                </form>
-                                                
-                                                <form name = "edit" action = "editRecords.php" method = "post">
-                                                    <button name = "IMEI" type="submit" value="'. $row[0] .'" class="btn btn-primary     btn-xs">
-                                                            <span class="glyphicon glyphicon-edit"></span>
+                                                <form name = "cancelled" action = "cancelledExist.php" method = "post">
+                                                    <button name = "IMEI" type="submit" value="'. $row[1] .'" class="btn btn-warning btn-xs">
+                                                            <span class="glyphicon glyphicon-ban-circle"></span>
+                                                    </button>
+                                                </form>';
+                                        }
+                                        else{
+                                            echo'<td id = "sold" width = 20>
+                                                <form name = "sold" action = "reservedToSold.php" method = "post">
+                                                    <button name = "Sold" type="submit" value="'. $row[0] .'" class="btn btn-success btn-xs">
+                                                            <span class="glyphicon glyphicon-shopping-cart"></span>
                                                     </button>
                                                 </form>
-                                                
-                                            </td>';	
+                                                <form name = "cancelled" action = "cancelledTemp.php" method = "post">
+                                                    <button name = "ID" type="submit" value="'. $row[0] .'" class="btn btn-warning btn-xs">
+                                                            <span class="glyphicon glyphicon-ban-circle"></span>
+                                                    </button>
+                                                </form>';
+                                        }
+                                        echo'</td>
+                                            <td id = "delete" width = 20>
+                                            <form name = "delete" action = "deleteRecord.php" method = "post">
+                                                 <button name = "IMEI" type="submit" value="' . $row[1] . '" class="btn btn-danger btn-xs" onClick="return confirm(\'Delete This entry?\')"> 
+                                                        <span class="glyphicon glyphicon-minus"></span>
+                                                 </button>
+                                            </form>
+
+                                            <form name = "edit" action = "editRecords.php" method = "post">
+                                                <button name = "IMEI" type="submit" value="'. $row[0] .'" class="btn btn-primary     btn-xs">
+                                                        <span class="glyphicon glyphicon-edit"></span>
+                                                </button>
+                                            </form>
+
+                                        </td>';	
                                             
                                             ;	
                                         

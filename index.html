@@ -1,94 +1,95 @@
+<!DOCTYPE html>
 <html>
 <head>
+<style>
+.container {
+    background-color: #333;
+    font-family: Arial;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+.container a {
+    float: left;
+    font-size: 16px;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
 
-    <title>[Osiris] Final Project</title>
+.dropdown {
+    float: left;
+    overflow: visible;
+}
 
-    <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+.dropdown .dropbtn {
+    font-size: 16px;    
+    border: none;
+    outline: none;
+    color: white;
+    padding: 12px 16px;
+    background-color: inherit;
+}
 
-    <!-- Custom CSS -->
-    <link href="css/simple-sidebar.css" rel="stylesheet">
+.container a:hover, .dropdown:hover .dropbtn {
+    background-color: #6E890C;
+}
 
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.body{
+    background-image: url(BG.png);
+    
+
+}
+</style>
 </head>
 <body>
 
-    <div id="wrapper">
-
-        <!-- Sidebar -->
-        <div id="sidebar-wrapper">
-            <ul class="sidebar-nav">
-                <li class="sidebar-brand">
-                    <a href="index.html">
-                        Home
-                    </a>
-                <li>
-                    Show Records
-                </li>
-                <li>
-                    <a href="listPhones.php">All</a>
-                </li>
-                <li>
-                    <a href="listOnHand.php">On Hand</a>
-                </li>
-                <li>
-                    <a href="listSold.php">Sold</a>
-                </li>
-                <li>
-                    <a href="listReturned.php">Returned</a>
-                </li>
-                <li>
-                    Options
-                </li>
-                <li>
-                    <a href="searchRecords.html">Search Records</a>
-                </li>
-                <li>
-                    <a href="addRecords.html">Add Records</a>
-                </li>
-                
-            </ul>
-        </div>
-        <!-- /#sidebar-wrapper -->
-
-        <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h3>Team Osiris<h3>
-                        <h4>Final Project</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /#page-content-wrapper -->
-
+<div class="container">
+  <a href="index.html">Home</a>
+  <div class="dropdown">
+    <button class="dropbtn">Phones</button>
+    <div class="dropdown-content">
+        <a href="listOnHand.php">On hand</a>
+        <a href="listReservations.php">Reservations</a>
+        <a href="listSold.php">Sold</a>
+        <a href="listReturned.php">Returned</a>
+      
     </div>
-    <!-- /#wrapper -->
+  </div> 
+  <a href="addRecords.html">Add Records</a>
+</div>
+<div class="body">
+    
+</div>
 
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
-
-    <!-- Menu Toggle Script -->
-    <script>
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-    </script>
-	
-	<!-- MySQL Show Records -->
-	<script src="listRecords.php"></script>
-	
 </body>
-
 </html>

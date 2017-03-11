@@ -21,7 +21,7 @@
     
     <div id="wrapper">
 
-         <!-- Sidebar -->
+        <!-- Sidebar -->
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand" align="center">
@@ -60,66 +60,54 @@
         <!-- /#sidebar-wrapper -->
 
         <!-- Page Content -->
-        <div class="row" id="headerTitle"><h1>Unit Reserved</h1></div>
+        <div class="row" id="headerTitle"><h1>New Reservation</h1></div>
         <div id="page-content-wrapper">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                 
-						<?php
-                            $id = $_POST['id'];
-                            
-                        
-                            $connection = mysqli_connect('localhost', 'root', '');
-                                if ($connection->connect_errno) {
-                                    echo ("SQL can't connect to PHP". $connection->connect_error);
-                                    exit();
-                                }	
-
-                            $SelectDB = mysqli_select_db($connection, "BukidnonGadgets");
-                                if(!$SelectDB)
-                                    die("Database Selection Failed: ".mysqli_error($connection));
-
-                            $query = "SELECT * FROM onHand WHERE ID = '$id'";
-                            $result = mysqli_query($connection, $query)
-                            or die ('query error');
-
-                             if(!$query)
-                                 ('Error in query: ' . mysqli_error($query));
-                            
-                            while($row = mysqli_fetch_row($result)){
-                                $id     = $row[0];
-                                $IMEI   = $row[1];
-                            }
-                        
-                            $query = "SELECT concat('iPhone ', type, ' ', color, ' ', size) FROM iphone WHERE IMEI = '$IMEI'";
-                            $result = mysqli_query($connection, $query)
-                            or die ('query error');
-                        
-                            while($row = mysqli_fetch_row($result)){
-                                $device      = $row[0];
-                            }
-                        echo'<form name = "input" action = "addReservationSubmit.php" method="post">
-                             <table cellspacing="10" name="form">
-								<tr>
-                                    <td align="right">IMEI: </td>
-                                    <td align="left">';echo($IMEI);echo'</td>
-                                    <input type = "text" name = "IMEI" value="'.$IMEI.'" hidden>
+                        <form name = "input" action = "addNewReservationSubmit.php" method="post">
+                            <table cellspacing="10" name="form">
+                                <tr>
+                                    <td align="right">Type:</td>
+                                    <td align="left"><select name="type">
+                                      <option value="5">iPhone 5</option>
+                                      <option value="5s">iPhone 5s</option>
+                                      <option value="6">iPhone 6</option>
+                                      <option value="6s">iPhone 6s</option>
+                                      <option value="6s Plus">iPhone 6s Plus</option>
+                                    </select></td>	
                                 </tr>
                                 <tr>
-                                    <td align="right">Device: </td>
-                                    <td align="left">';echo($device);echo'</td>
+                                    <td align="right">Color:</td>
+                                    <td align="left"><select name="color">
+                                      <option value="Silver">Silver</option>
+                                      <option value="Gold">Gold</option>
+                                      <option value="Space Grey">Space Grey</option>
+                                      <option value="Rose Gold">Rose Gold</option>
+                                    </select></td>	
                                 </tr>
-                                <tr><td></td></tr><tr><td></td></tr>
+
                                 <tr>
-                                    <td align="right">Buyer Name: </td>
+                                    <td align="right">Capacity:</td>
+                                    <td align="left"><select name="size">
+                                      <option value="16">16gb</option>
+                                      <option value="32">32gb</option>
+                                      <option value="64">64gb</option>
+                                      <option value="128">128gb</option>
+                                    </select></td>
+                                </tr>
+                                <tr><td></td></tr>
+                                <tr><td></td></tr>
+                                <tr>
+                                    <td align="right">Buyer Name:</td>
                                     <td align="left"><input type = "text" name = "buyerName"></td>
                                 </tr>
                                 <tr>
-                                    <td align="right">Buyer Contact No.:</td>
+                                    <td align="right">Contact No. :</td>
                                     <td align="left"><input type = "text" name = "buyerNo"></td>
                                 </tr>
-                                <tr><td></td></tr><tr><td></td></tr>
+                                <tr><td></td></tr>
+                                <tr><td></td></tr>
                                 <tr>
                                     <td align="right">Payment Status:</td>
                                     <td align="left"><select name="Status">
@@ -135,14 +123,15 @@
                                 <tr>
                                     <td align="left" colspan="2"><textarea name ="remarks" rows="10", cols="39"placeholder="Remarks"></textarea></td>
                                 </tr>
+                                <tr><td></td></tr><tr><td></td></tr>
                                 <tr>
                                     <td align="right"><input type = "submit" value = "Submit"></td>
-                                    <td align="left"><button type="reset" value="Reset">Reset</button></td>
+                                    <td align="left"><input type = "reset"></td>
                                 </tr>
-                        </table></form>';
-                        
-                        mysqli_close($connection);
-                        ?>
+                            </table>
+                        </form>
+                 
+						
                         
                         
                         

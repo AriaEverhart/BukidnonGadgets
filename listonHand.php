@@ -25,11 +25,11 @@
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
-                <li class="sidebar-brand">
+                <li class="sidebar-brand" align="center">
                     <a href="index.html">
                         Home
                     </a>
-                <li>
+                <li align="center">
                     Show Records
                 </li>
                 <li>
@@ -47,23 +47,27 @@
                 <li>
                     <a href="listReservations.php">Reservations</a>
                 </li>
-                <li>
+                <li align="center">
                     Options
                 </li>
                 <li>
                     <a href="addRecords.html">Add Records</a>
+                </li>
+                <li>
+                    <a href="addNewReservation.html">New Reservation</a>
                 </li>
             </ul>
         </div>
         <!-- /#sidebar-wrapper -->
 
         <!-- Page Content -->
+        <div class="row" id="headerTitle"><h1>On Hand</h1></div>
+
+        <!-- Page Content -->
         <div id="page-content-wrapper">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-12">
-                        <h1>On Hand</h1>
-                 
+                    <div class="col-lg-12">                 
 						<?php
                             $connection = mysqli_connect('localhost', 'root', '');
                                 if ($connection->connect_errno) {
@@ -75,7 +79,15 @@
                                     if(!$SelectDB)
                                         die("Database Selection Failed: ".mysqli_error($connection));
 
-                                $query = 'SELECT onHand.ID, onHand.IMEI, concat("iPhone ", type, " ", Color,  " ", size, "gb"), IOS_Version, iPhone.Unlock_Type, iPhone.clean from iPhone, onHand WHERE (onHand.IMEI = iPhone.IMEI) ORDER BY onhand.ID;';
+                                $query = 'SELECT onHand.ID, 
+                                                 onHand.IMEI, 
+                                                 concat("iPhone ", type, " ", Color,  " ", size, "gb"), 
+                                                 IOS_Version, 
+                                                 iPhone.Unlock_Type, 
+                                                 iPhone.clean 
+                                          FROM iPhone, onHand 
+                                          WHERE (onHand.IMEI = iPhone.IMEI) 
+                                          ORDER BY onhand.ID;';
                                 $result = mysqli_query($connection, $query)
                                 or die ('query error');
 
@@ -126,7 +138,7 @@
                                             
                                             <td id = "delete" width = 20>
                                                 <form name = "delete" action = "deleteRecord.php" method = "post">
-                                                     <button name = "IMEI" type="submit" value="' . $row[1] . '" class="btn btn-danger btn-xs" onClick="return confirm(\'Delete This account?\')"> 
+                                                     <button name = "IMEI" type="submit" value="' . $row[1] . '" class="btn btn-danger btn-xs" onClick="return confirm(\'Delete This entry?\')"> 
                                                             <span class="glyphicon glyphicon-minus"></span>
                                                      </button>
                                                 </form>

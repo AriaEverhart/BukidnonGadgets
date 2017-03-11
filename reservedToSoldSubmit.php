@@ -19,7 +19,7 @@
     $newSold       = "INSERT INTO sold VALUES ('$IMEI', '$buyerID', '$dateSold', '$salePrice')";
     $newSoldResult = mysqli_query($connection, $newSold) or die ("Buyer Insertion Query Error: '$newSold'");
     
-    $deleteReservation       = "DELETE FROM reservation WHERE IMEI='$IMEI'";
+    $deleteReservation       = "DELETE FROM reservation WHERE buyer_id='$buyerID'";
     $deleteReservationResult = mysqli_query($connection, $deleteReservation) or die ("Buyer Insertion Query Error: '$deleteReservation'");
         
     mysqli_close($connection);

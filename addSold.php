@@ -60,6 +60,9 @@
                 <li>
                     <a href="addRecords.html">Add Records</a>
                 </li>
+                <li>
+                    <a href="addNewReservation.html">New Reservation</a>
+                </li>
             </ul>
         </div>
         <!-- /#sidebar-wrapper -->

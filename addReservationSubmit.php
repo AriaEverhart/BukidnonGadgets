@@ -4,6 +4,7 @@
     $buyerNo    = $_POST['buyerNo'];
     $Status     = $_POST['Status'];
     $amountPaid = $_POST['amountPaid'];
+    $remarks    = $_POST['remarks'];
 
     $connection = mysqli_connect('localhost', 'root', '');
         if ($connection->connect_errno) {
@@ -20,7 +21,7 @@
 
     $Buyer_ID             = mysqli_insert_id($connection);
     
-    $newReservation       = "INSERT INTO reservation VALUES ('$IMEI', '$Buyer_ID', '$Status', '$amountPaid')";
+    $newReservation       = "INSERT INTO reservation VALUES ('$Buyer_ID', '$IMEI', '$Status', '$amountPaid', '$remarks')";
     $newReservationResult = mysqli_query($connection, $newReservation) or die ("Reservation Insertion Query Error: '$newReservation'");
 
     $deleteOnHand         = "DELETE FROM onHand WHERE IMEI = '$IMEI'";

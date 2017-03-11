@@ -25,11 +25,11 @@
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
-                <li class="sidebar-brand">
+                <li class="sidebar-brand" align="center">
                     <a href="index.html">
                         Home
                     </a>
-                <li>
+                <li align="center">
                     Show Records
                 </li>
                 <li>
@@ -47,23 +47,26 @@
                 <li>
                     <a href="listReservations.php">Reservations</a>
                 </li>
-                <li>
+                <li align="center">
                     Options
                 </li>
                 <li>
                     <a href="addRecords.html">Add Records</a>
+                </li>
+                <li>
+                    <a href="addNewReservation.html">New Reservation</a>
                 </li>
             </ul>
         </div>
         <!-- /#sidebar-wrapper -->
 
         <!-- Page Content -->
+        <div class="row" id="headerTitle"><h1>iPhones</h1></div>
         <div id="page-content-wrapper">
+            
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1>iPhones</h1>
-                 
 						<?php
                             $connection = mysqli_connect('localhost', 'root', '');
                                 if ($connection->connect_errno) {
@@ -127,7 +130,7 @@
                                         echo' 
                                            <td id = "delete" width = 20>
                                                 <form name = "delete" action = "deleteRecord.php" method = "post">
-                                                     <button name = "IMEI" type="submit" value="' . $row[0] . '" class="btn btn-danger btn-xs"  onClick="return confirm(\'Delete This account?\')"> 
+                                                     <button name = "IMEI" type="submit" value="' . $row[1] . '" class="btn btn-danger btn-xs" onClick="return confirm(\'Delete This entry?\')"> 
                                                             <span class="glyphicon glyphicon-minus"></span>
                                                      </button>
                                                 </form>
